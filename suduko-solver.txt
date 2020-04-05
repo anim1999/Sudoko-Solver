@@ -1,0 +1,79 @@
+class sdukoSolver {
+  public static void main(String[]args){
+    int[][] grid = {{9,0,0,1,0,0,0,0,5},
+   {0,0,5,0,9,0,2,0,1},
+   {8,0,0,0,4,0,0,0,0},
+   {0,0,0,0,8,0,0,0,0},
+   {0,0,0,7,0,0,0,0,0},
+   {0,0,0,0,2,6,0,0,9},
+   {2,0,0,3,0,0,0,0,6},
+   {0,0,0,2,0,0,9,0,0},
+   {0,0,1,9,0,4,5,7,0},};// 0 represents blank space on the greed
+  solve(grid);
+
+    for(int i =0;i<9;i++){
+      for(int m =0;m<9;m++){
+      System.out.print(grid[i][m]);//printing the suduko-solved board 
+      }
+    System.out.println();
+    }
+  }
+  public static boolean checkRow(int row, int col,int[][] grid1,int m){
+    boolean check = true; // to check whetaher the number is unique or not on the besis of row
+    for(int col1 =0;col1<9;col1++){
+      if(grid1[row][col1]==m){
+        check =false;
+      }
+    }
+  return check;
+  }
+  public static boolean checkColumn(int row, int col,int[][] grid1,int m){
+  boolean check = true; // to check  wheather the number is unique or not on the basis of column
+    for(int row1 =0;row1<9;row1++){
+      if(grid1[row1][col]==m){
+        check =false;
+      }
+    }
+  return check;}
+ public static boolean checkBox(int row, int col,int[][] grid, int number) {
+  int r = row - row % 3;
+  int c = col - col % 3;
+  
+  for (int i = r; i < r + 3; i++)
+   for (int j = c; j < c + 3; j++)
+    if (grid[i][j] == number)
+     return false;
+  
+  return true;
+ }
+  
+  public static boolean isOk(int i, int m ,int[][] grid,int n){
+    boolean check = false;
+  
+    if(checkRow(i,m,grid,n)==true&&checkBox(i,m,grid,n)==true&&checkColumn(i,m,grid,n)==true){
+    
+      check =  true;}
+    return check;
+    
+  }
+    public static boolean solve(int[][] grid){
+    for(int i =0;i<9;i++){//O(n.pow(4))
+       for(int m =0;m<9;m++){//O(queeb(n))
+         if(grid[i][m] == 0){
+            for(int n =1;n<=9;n++){//n*O(n)+O(n)=O(sqrt(n))
+      //O(n)
+      if(isOk(i, m ,grid,n)){//cheching the uniqueness of the numbers placed on the grid
+      grid[i][m] = n;
+      
+      if (solve(grid)){
+      return true;}//back-tarcing
+      
+      else {grid[i][m] = 0;}
+      }
+    }
+            return false;
+      } 
+    }
+    }
+    return true;}
+}
